@@ -4,21 +4,26 @@ import {v4 as uuidv4} from 'uuid'
 
 
 const Quoteform=(props)=>{
-    const[name,setName]=useState("")
-    const[body,setBody]=useState("")
+    
     //destructuring callback from the parent component
 
-    const{addItem}=props
+    const{formsubmission,name:author,id:slno,body:quote,handeltoggle}=props
+    const[name,setName]=useState(author?author:"")
+    const[body,setBody]=useState(quote?quote:"")
+    const[id,setId]=useState(slno?slno:uuidv4())
 
 const handelsubmit=(e)=>{
   e.preventDefault()
   const formdata={
-      id:uuidv4(),
+      id:id,
       name:name,
       body:body
   }
-  addItem(formdata)
+  formsubmission(formdata)
   //reset form
+  if (handeltoggle){
+    handeltoggle()
+  }
   setName('')
   setBody('')
 }
@@ -33,7 +38,7 @@ const handelnamechange=(e)=>{
 
   return (
     <div>
-     <h2>Add quotes</h2>
+    
      <form onSubmit={handelsubmit}>
          <label>Name</label><br/>
          <input type="text" value={name} onChange={handelnamechange}/><br/>

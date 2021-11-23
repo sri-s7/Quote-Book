@@ -1,7 +1,7 @@
 import React,{useState,useEffect}from 'react'
 import Quotelist from './quotelist'
-import Quoteform from './quoteform'
-import Quoteitem from './quoteitem'
+import Addquote from './Addquote'
+
 
 
 const Quotescontainer=(props)=>{
@@ -24,16 +24,34 @@ const Quotescontainer=(props)=>{
         localStorage.setItem('quotes',JSON.stringify(quotes))
     },[quotes])
 
+
+    const removeItem=(id)=>{
+        const result=quotes.filter((q)=>{
+            return q.id!==id
+        })
+        setQuotes(result)
+
+    }
+    const editItem=(quote)=>{
+      const result=quotes.map((q)=>{
+        if(q.id===quote.id)
+        {
+          return {...q,...quote}
+        }
+        else{
+          return {...q}
+        }
+      })
+      setQuotes(result)
+    }
+
   return (
     <div>
     
-     {quotes.map((q)=>{
-         return(<Quoteitem key={q.id}{...q}/>)
-     })}
-
-     <Quoteitem />
-     <Quotelist quotes={quotes}/>
-     <Quoteform  addItem={addItem}/>
+   
+     
+     <Quotelist quotes={quotes} removeItem={removeItem} editItem={editItem}/>
+     <Addquote addItem={addItem} />
      
      
 
